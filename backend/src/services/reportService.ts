@@ -39,9 +39,9 @@ export class ReportService {
       .populate('customer');
 
     // Tell TypeScript that item has type IItem
-    const totalRevenue = sales.reduce((sum, sale) => {
+    const totalRevenue = sales.filter(item => item !== null && item !== undefined).reduce((sum, sale) => {
       const item = sale.item as unknown as IItem; 
-       if(!item.price){
+       if(!item){
         return sum
        }
       return sum + sale.quantity * (item.price || 0);
@@ -58,25 +58,47 @@ export class ReportService {
   } 
   async getItemReport(search?: string) {
     const query: any = {};
-
+  
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } }
       ];
     }
-
+  
+    // Step 1: Fetch items with optional search
     const items = await ItemModel.find(query);
-
-    const totalUniqueItems = items.length;
-    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-
+  
+    // Step 2: Aggregate sales to get total quantity sold and revenue per item
+    const salesAggregation = await SaleModel.aggregate([
+      {
+        $group: {
+          _id: '$item',
+          totalQuantity: { $sum: '$quantity' },
+          totalRevenue: { $sum: { $multiply: ['$quantity', '$item.price'] } } // Optional, requires $lookup if price not in Sale
+        }
+      }
+    ]);
+  
+    // Step 3: Merge sales data into items
+    const itemReport = items.map(item => {
+      const saleInfo = salesAggregation.find(s => s._id.toString() === item._id.toString());
+  
+      return {
+        _id: item._id,
+        name: item.name,
+        totalQuantity: saleInfo?.totalQuantity || 0,
+        totalRevenue: (saleInfo?.totalQuantity || 0) * item.price, // Revenue = qty * price
+      };
+    });
+  
     return {
-      totalUniqueItems,
-      totalQuantity,
-      items
+      totalUniqueItems: items.length,
+      totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
+      items: itemReport
     };
-  } 
+  }
+  
 
 
   async getCustomerLedger(customerId: string) {

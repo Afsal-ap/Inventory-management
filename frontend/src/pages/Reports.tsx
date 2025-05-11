@@ -18,7 +18,7 @@ const Reports = () => {
   const { data: salesReport, isLoading: isSalesLoading } = useGetSalesReportQuery(filters);
   const { data: itemReport, isLoading: isItemLoading } = useGetItemReportQuery(filters);
   const { data: customerLedger, isLoading: isCustomerLoading } = useGetCustomerLedgerQuery(filters);
-
+   
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
@@ -26,7 +26,8 @@ const Reports = () => {
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
-
+  
+ 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Reports</h1>
@@ -94,11 +95,11 @@ const Reports = () => {
   <tbody>
     {salesReport?.sales?.map((sale) => (
       <tr key={sale._id} className="border-t hover:bg-gray-50">
-        <td className="p-3 align-middle">{sale.item.name}</td>
-        <td className="p-3 align-middle">{sale.customer.name}</td>
+        <td className="p-3 align-middle">{sale.item?.name || 'N/A'}</td>
+        <td className="p-3 align-middle">{sale.customer?.name || 'N/A'}</td>
         <td className="p-3 align-middle">{sale.quantity}</td>
         <td className="p-3 align-middle">{sale.isCash ? 'Cash' : 'Credit'}</td>
-        <td className="p-3 align-middle">{(sale.quantity * sale.price).toFixed(2)}</td>
+        <td className="p-3 align-middle"> {(Number(sale?.quantity) * Number(sale?.item?.price)).toFixed(2)}</td>
         <td className="p-3 align-middle">{format(new Date(sale.date), 'dd/MM/yyyy')}</td>
       </tr>
     ))}
@@ -147,14 +148,14 @@ const Reports = () => {
         <div className="flex gap-2 mb-4">
           <button onClick={() => window.print()} className="p-2 bg-green-500 text-white">Print</button>
           <a
-            href={`/api/customer/ledger/excel?customerId=${filters.customerId}`}
+            href={`/api/reports/customer-ledger/:customerId/excel?customerId=${filters.customerId}`}
             target="_blank"
             className="p-2 bg-yellow-500 text-white"
           >
             Export Excel
           </a>
           <a
-            href={`/api/customer/ledger/pdf?customerId=${filters.customerId}`}
+            href={`/api/reports/customer-ledger/${filters.customerId}/excel`}
             target="_blank"
             className="p-2 bg-red-500 text-white"
           >

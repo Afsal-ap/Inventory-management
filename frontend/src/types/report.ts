@@ -5,11 +5,12 @@ export interface SalesReport {
     totalRevenue: number;
     sales: Array<{
       _id: string;
-      item: { name: string };
+      item: { name: string 
+      price: number;
+      };
       customer: { name: string };
       quantity: number;
       isCash: boolean;
-      price: number;
       date: string;
     }>;
   }

@@ -12,14 +12,14 @@ const reportService = new ReportService();
 export const getSalesReport = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { startDate, endDate, customerId, itemId } = req.query;
-
+     
+        
     const report = await reportService.getSalesReport({
       startDate: startDate as string,
       endDate: endDate as string,
       customerId: customerId as string,
       itemId: itemId as string,
     });
-       console.log(report, "repooort");
        
     res.json(report);
   } catch (err) {
@@ -31,8 +31,7 @@ export const getItemReport = async (req: Request, res: Response, next: NextFunct
       const { search } = req.query;
   
       const report = await reportService.getItemReport(search as string);
-      console.log(report,"repooort");
-      
+              
       res.json(report);
     } catch (err) {
       next(err);
@@ -42,7 +41,9 @@ export const getItemReport = async (req: Request, res: Response, next: NextFunct
   export const getCustomerLedger = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { customerId } = req.params;
-      const ledger = await reportService.getCustomerLedger(customerId);
+      const ledger = await reportService.getCustomerLedger(customerId); 
+
+      console.log(ledger, "data")
       res.json(ledger);
     } catch (err) {
       next(err);
