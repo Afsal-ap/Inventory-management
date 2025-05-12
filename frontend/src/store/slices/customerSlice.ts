@@ -11,7 +11,7 @@ export interface Customer {
 export const customerApi = createApi({
   reducerPath: 'customerApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api/customers',
+    baseUrl: 'https://inventory-management-f4ie.onrender.com',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
       if (token) {

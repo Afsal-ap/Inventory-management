@@ -4,7 +4,7 @@ import { IItem } from '../../types/item';
 export const itemApi = createApi({
   reducerPath: 'itemApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api',
+    baseUrl: 'https://inventory-management-f4ie.onrender.com',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as any).auth.token;
       console.log('Auth token:', token);
