@@ -4,7 +4,7 @@ import { RootState } from '../store/store';
 
 export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://inventory-management-f4ie.onrender.com',
+    baseUrl: 'https://inventory-management-f4ie.onrender.com/api',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
       if (token) {
