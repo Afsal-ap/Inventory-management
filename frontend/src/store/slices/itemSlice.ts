@@ -21,9 +21,9 @@ export const itemApi = createApi({
     getItems: builder.query<IItem[], void>({
       query: () => '/items',
       providesTags: ['Item'],
-      onQueryStarted: async (arg, { queryFulfilled }) => {
+      onQueryStarted: async ( queryFulfilled ) => {
         try {
-          const { data } = await queryFulfilled;
+          const  data  = await queryFulfilled;
           console.log('Fetched items:', data);
         } catch (error) {
           console.error('Failed to fetch items:', error);
@@ -48,7 +48,7 @@ export const itemApi = createApi({
         };
       },
       invalidatesTags: ['Item'],
-      onQueryStarted: async (arg, { queryFulfilled }) => {
+      onQueryStarted: async ( queryFulfilled ) => {
         try {
           const { data } = await queryFulfilled;
           console.log('Update successful:', data);

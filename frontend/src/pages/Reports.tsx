@@ -5,7 +5,6 @@ import {
   useGetCustomerLedgerQuery,
 } from '../store/slices/reportSlice';
 import { format } from 'date-fns';
-import { SalesReport, ItemReport, CustomerLedger } from '../types/report';
 
 const Reports = () => {
   const [filters, setFilters] = useState({

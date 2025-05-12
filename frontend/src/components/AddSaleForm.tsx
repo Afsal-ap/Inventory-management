@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAddSaleMutation } from '../store/slices/saleslice';
 import { useGetItemsQuery } from '../store/slices/itemSlice';
 import { useGetCustomersQuery } from '../store/slices/customerSlice';
