@@ -11,7 +11,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: 'https://inventorymanagement-puce.vercel.app/', 
+  origin: 'https://inventorymanagement-puce.vercel.app', 
   credentials: true               
 }));
 
