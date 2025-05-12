@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { RootState } from '../store/store';
 
 interface ProtectedRouteProps {
-  children: JSX.Element;
+  children:React.ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
