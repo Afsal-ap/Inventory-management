@@ -4,14 +4,27 @@ import { ItemModel } from '../models/itemModel';
 
 export class ItemRepository implements IItemRepository {
   async create(item: IItem): Promise<IItem> {
+    const existingItem = await this.findByName(item.name);
+    if (existingItem) {
+      throw new Error("Item with this name already exists.");
+    }
+  
     const created = await ItemModel.create(item);
     return this.toIItem(created);
   }
+  
 
   async findById(id: string): Promise<IItem | null> {
     const doc = await ItemModel.findById(id);
     return doc ? this.toIItem(doc) : null;
   }
+
+
+  async findByName(name: string): Promise<IItem | null> {
+    const item = await ItemModel.findOne({ name });
+    return item ? this.toIItem(item) : null;
+  }
+  
 
   async findAll(): Promise<IItem[]> {
     const items = await ItemModel.find();
