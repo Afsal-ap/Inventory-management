@@ -4,7 +4,7 @@ import CustomerForm from '../components/CustomerForm';
 import ConfirmModal from '../components/ConfirmModal';
 import { ICustomer } from '../types/customer';
 
-const CustomerList = () => {
+const Customer = () => {
   const { data: customers = [], refetch } = useGetCustomersQuery();
   const [addCustomer] = useAddCustomerMutation();
   const [updateCustomer] = useUpdateCustomerMutation();
@@ -94,4 +94,4 @@ const CustomerList = () => {
   );
 };
 
-export default CustomerList;
+export default Customer;
